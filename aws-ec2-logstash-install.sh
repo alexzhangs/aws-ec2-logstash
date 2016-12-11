@@ -13,6 +13,7 @@ usage () {
     printf "\t[-r REPO_URL]\n"
     printf "\t[-n REPO_NAME]\n"
     printf "\t[-v VERSION]\n"
+    printf "\t[-a ADDTIONAL_PACKAGE] ...\n"
     printf "\t[-h]\n\n"
 
     printf "OPTIONS\n"
@@ -27,6 +28,10 @@ usage () {
 
     printf "\t[-v VERSION]\n\n"
     printf "\tDefault version is determined by yum.\n\n"
+
+    printf "\t[-a ADDTIONAL_PACKAGE] ...\n\n"
+    printf "\tInstall addtional yum packages.\n"
+    printf "\tMulti -a is allowed.\n\n"
 
     printf "\t[-h]\n\n"
     printf "\tThis help.\n\n"
@@ -43,7 +48,8 @@ install_yum_repo () {
 }
 
 
-while getopts f:r:n:v:h opt; do
+additional_packages=()
+while getopts f:r:n:v:a:h opt; do
     case $opt in
         f)
             pkg_file=$OPTARG
@@ -56,6 +62,9 @@ while getopts f:r:n:v:h opt; do
             ;;
         v)
             version=$OPTARG
+            ;;
+        a)
+            additional_packages[${#additional_packages[@]}]=$OPTARG
             ;;
         h|*)
             usage
@@ -82,6 +91,10 @@ if [[ -n $repo_name ]]; then
 else
     yum install -y "$package"
 fi
+
+for p in "${additional_packages[@]}"; do
+    yum install -y "$p"
+done
 
 /sbin/initctl start logstash
 
