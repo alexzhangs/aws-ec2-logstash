@@ -48,7 +48,9 @@ install_yum_repo () {
 }
 
 
+package=logstash
 additional_packages=()
+
 while getopts f:r:n:v:a:h opt; do
     case $opt in
         f)
@@ -61,7 +63,7 @@ while getopts f:r:n:v:a:h opt; do
             repo_name=$OPTARG
             ;;
         v)
-            version=$OPTARG
+            package=$package-$OPTARG
             ;;
         a)
             additional_packages[${#additional_packages[@]}]=$OPTARG
@@ -78,12 +80,6 @@ else
     if [[ -n $repo_file ]]; then
         install_gpg_key
         install_yum_repo "$repo_file"
-    fi
-
-    if [[ -n $version ]]; then
-        package=logstash-$version
-    else
-        package=logstash
     fi
 
     if [[ -n $repo_name ]]; then
