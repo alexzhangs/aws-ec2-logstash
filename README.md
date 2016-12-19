@@ -9,7 +9,7 @@ sudo yum install -y git
 git clone https://github.com/alexzhangs/aws-ec2-logstash.git
 ```
 
-## Installation Logstash
+## Install Logstash
 
 Since Logstash 5.x, it requires java 1.8.
 
