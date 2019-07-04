@@ -2,6 +2,8 @@
 
 Install Logstash on AWS EC2 instance.
 
+Tested with Logstash 5.x.
+
 ## Get code
 
 ```
